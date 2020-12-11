@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--    viewport这个需要多理解一下，就是相当于规定页面显示的大小，也就是决定css的像素到底以什么为单位-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--    强制IE8采用低版本方式渲染，确保ie8能正常显示-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue学习第5节网络应用之axios</title>
+    <!--    导入vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--    导入axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<script>
+    //地址：为接口地址
+    //get请求是？后接k-v用&链接，post请求是，后接json对象
+    //第一个方法是请求完成之后出发，返回响应信息，第二个方法是在发生错误的时候出发，返回错误
+    //axios.get(地址?(这是查询字符串)key1=value&key2=value).then(function(response){},function(err){})
+    //axios.post(地址,(这是查询字符串){key1:value,key2:value}).then(function(response){},function(err){})
+</script>
+<!--axios网络请求库用法，分别处理get和post请求-->
+<!--
+    接口1：随即笑话
+    请求地址：https://autumnfish.cn/api/joke/list
+    请求方法：get
+    请求参数：num(笑话条数,数字)
+    相应内容：随即笑话
+-->
+<!--
+    接口2：用户注册
+    请求地址：https://autumnfish.cn/api/user/reg
+    请求方法：post
+    请求参数：username(用户名,字符串)
+    相应内容：注册成功或失败
+-->
+    <div id="vue1">
+        <input type="button" value="来俩笑话" class="get" onclick="a()">
+        <input type="button" value="用户注册" class="post" onclick="b()">
+        <hr/>
+        <input type="button" value="来个笑话" @click="oneFun">
+        <h3>{{fun}}</h3>
+    </div>
+    <script>
+        function a() {
+            alert("");
+            axios.get("https://autumnfish.cn/api/joke/list?num=2").then(function (response) {
+                console.log(response);
+            },function (err) {
+                console.log(err);
+            });
+        };
+        function b() {
+            axios.post("https://autumnfish.cn/api/user/reg",{username:"ajdoajdia"}).then(function (response) {
+                console.log(response);
+            },function (err) {
+                console.log(err);
+            });
+        };
+        var vue1=new Vue({
+            el:"#vue1",
+            data:{
+                fun:""
+            },
+            methods:{
+                oneFun:function () {
+                    //axios回调函数中this已经改变，无法访问到data中数据，所以我们需要用一个变量储存这个this
+                    var t=this;
+                    axios.get("https://autumnfish.cn/api/joke").then(function (response) {
+                        console.log(response);
+                        t.fun=response.data;
+                    },function (err) {
+                        console.log(err);
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+<!--    viewport这个需要多理解一下，就是相当于规定页面显示的大小，也就是决定css的像素到底以什么为单位-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<!--    强制IE8采用低版本方式渲染，确保ie8能正常显示-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue学习第一节基础</title>
+<!--    导入vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+/*设置边框*/
+        .bk {
+            border-style: dotted;
+            border-width: 1px;
+        }
+    </style>
+</head>
+<body>
+    {{message}}<!--没有修改-->
+    <div id="app">
+        {{ message}}<!--修改了-->
+        <span>
+            {{message}}<!--修改了-->
+        </span>
+        <hr/>
+<!--        将这个元素的title与vue data中的message1保持一致-->
+        <div  v-bind:title="message1" >
+            鼠标悬停查看提示信息
+        </div>
+        <hr/>
+        <table class="bk">
+            <tr >
+                <th>姓名</th>
+                <th>年龄</th>
+            </tr>
+            <tr>
+                <td>{{object1.name}}</td>
+                <td>{{object1.age}}</td>
+            </tr>
+        </table>
+        <hr/>
+        <ul>
+            <li>{{list1[0]}}</li>
+            <li>{{list1[1]}}</li>
+            <li>{{list1[2]}}</li>
+            <li>{{list1[3]}}</li>
+        </ul>
+    </div>
+<script>
+    var app=new Vue({
+        //挂载点，el命中内部可被选中修改，外部不行
+        //可以使用其他选择器，一般使用id选择器
+        //不能对html和body标签使用
+        el:"#app",
+        //数据对象
+        data:{
+            message:"hello word",
+            message1:'页面加载于'+new Date().toLocaleDateString(),
+            //对象
+            object1:{
+                name:"我自己",
+                age:"18"
+            },
+            //数组
+            list1:["元素1","元素2","元素3","元素4"]
+
+        }
+    })
+</script>
+</body>
+</html>

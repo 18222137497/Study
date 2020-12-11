@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--    viewport这个需要多理解一下，就是相当于规定页面显示的大小，也就是决定css的像素到底以什么为单位-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--    强制IE8采用低版本方式渲染，确保ie8能正常显示-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue学习第四节本地应用之记事本</title>
+    <!--    导入vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="vue1">
+        <input type="text" v-model="text1" placeholder="请输入任务" @keyup.enter="addTextList">
+        <ul>
+            <li v-for="(t,index) in textList">{{index+1+" "+t}}&nbsp;<a href="#" @click="deleteOne(index)">×</a></li>
+        </ul>
+        <div v-show="textList.length!=0"><span>{{textList.length}}条数据</span>&nbsp;<button @click="clear1">清空</button></div>
+    </div>
+    <script>
+        var vue1=new Vue({
+            el:"#vue1",
+            data:{
+                textList:["小草"],
+                text1:"",
+            },
+            methods:{
+                addTextList:function () {
+                    this.textList.push(this.text1);
+                    this.text1="";
+                },
+                clear1:function () {
+                    this.textList=[];
+                },
+                deleteOne:function (index) {
+                    //表示先获取这个数组中这个元素的下标，然后从这个下标开始计算，删除长度为1的元素
+                    this.textList.splice(index,1);
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>

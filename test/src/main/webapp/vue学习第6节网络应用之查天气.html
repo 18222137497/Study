@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--    viewport这个需要多理解一下，就是相当于规定页面显示的大小，也就是决定css的像素到底以什么为单位-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--    强制IE8采用低版本方式渲染，确保ie8能正常显示-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue学习第6节网络应用之查天气</title>
+    <!--    导入vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--    导入axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="vue">
+        <input type="text" v-model="cityName" placeholder="请输入城市名称" @keyup.enter="find"><button value="查询" @click="find"/>
+        <ul>
+            <li v-for="item in weather">{{"天气："+item.type+"     日期:"+item.date+"     最高温度："+item.high+"     最低温度："+item.low}}</li>
+        </ul>
+    </div>
+    <script>
+        var vue=new Vue({
+            el:"#vue",
+            data:{
+                cityName:"",
+                weather:[]
+            },
+            methods:{
+                find:function () {
+                    var t=this;
+                    axios.get("http://wthrcdn.etouch.cn/weather_mini?city="+this.cityName).then(function (response) {
+                        t.weather=response.data.data.forecast;
+                    },function (err) {
+                        console.log(err);
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue学习第8节模板的使用</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+
+    <div id="app">
+<!--        v-bind可以为页面注册vue组件，关联到下面的props-->
+        <wangj v-for="test in testList" :ine="test"></wangj>
+    </div>
+    <script>
+        //vue对象模板，必须放在包含对应的id的标签下
+        Vue.component("wangj",{
+            props:["ine"],
+            template:"<li>{{ine}}</li>"
+        })
+        var app=new Vue({
+            el:"#app",
+            data:{
+                testList:["第一","第二","第三"]
+            },
+            methods:{
+
+            }
+        })
+    </script>
+</body>
+</html>

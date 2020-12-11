@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue学习第10节插槽slot</title>
+    <!--    导入vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--    导入axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="vue">
+        <todo>
+            <todo-title slot="todo-title" :title="title"></todo-title>
+            <todo-list slot="todo-list" v-for="ele in list" :ele="ele"></todo-list>
+        </todo>
+    </div>
+    <script>
+        Vue.component("todo",{
+            template: "<div>" +
+                "<slot name='todo-title'></slot>" +
+                "<ul>" +
+                "<slot name='todo-list'></slot>" +
+                "</ul>"+
+                "</div>"
+        })
+        Vue.component("todo-title",{
+            props: ["title"],
+            template: "<h3>{{title}}</h3>"
+        })
+        Vue.component("todo-list",{
+            props: ["ele"],
+            template: "<li>{{ele}}</li>"
+        })
+        var vue=new Vue({
+            el:"#vue",
+            data:{
+                title:"表头",
+                list:["数据1","数据2","数据3"]
+            },
+            methods:{
+
+            },
+            computed:{
+
+            }
+
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue学习第9节计算属性</title>
+    <!--    导入vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--    导入axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="vue">
+<!--        这是调用方法，必须加()-->
+        {{getTime()}}<br/>
+<!--        这是调用计算属性，不必加()，因为他通过返回值定义成了一个属性-->
+        {{getTime1}}
+    </div>
+    <script>
+        var vue=new Vue({
+            el:"#vue",
+            data:{
+
+            },
+            methods:{
+                getTime:function () {
+                    return Date.now();//返回一个时间戳
+                }
+            },
+            //必须有返回值，计算属性可以理解为缓存
+            computed:{
+                getTime1:function () {
+                    return Date.now();//这个返回值会被存储到页面中，每次调用方法会重置，但是如果调用其值则不会进行开销
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue学习第11节自定义事件内容分发</title>
+    <!--    导入vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="vue">
+        <todo>
+            <todo-title slot="todo-title" :title="title"></todo-title>
+<!--            这个v-on组件类似于给remove(index)命名成remove然后传递到插槽组件中-->
+            <todo-list slot="todo-list" @remove="remove(index)" v-for="(ele,index) in list" :ele="ele" :index="index"></todo-list>
+        </todo>
+    </div>
+    <script>
+        Vue.component("todo",{
+            template:"<div>" +
+                    "<slot name='todo-title'></slot>"+
+                    "<ul>"+
+                    "<slot name='todo-list'></slot>"+
+                    "</ul>"+
+                "</div>"
+        })
+        Vue.component("todo-title",{
+            props: ["title"],
+            template: "<h3>{{title}}</h3>"
+        })
+        Vue.component("todo-list",{
+            props:["ele","index"],
+            template:"<li>{{ele}}<button @click='remove1'>×</button></li>",
+            methods: {
+                remove1:function (index) {
+                    //调用全局方法，方法的名字为上面起的别名，参数为index(就是调用全局的组件)
+                    //全局方法可以使用全局变量.方法运行,例如：vue.remove(1)
+                    this.$emit("remove",index);
+                }
+            }
+        })
+        var vue =new Vue({
+            el:"#vue",
+            data:{
+                title:"标题",
+                list:["数据1","数据2","数据3","数据4"]
+            },
+            methods:{
+                remove:function (index) {
+                    console.log("删除了下标为"+index+"的数据")
+                    //删除数组数据的方法，方法名别写错了
+                    this.list.splice(index,1);
+                }
+            },
+            computed:{
+
+            }
+        })
+    </script>
+</body>
+</html>

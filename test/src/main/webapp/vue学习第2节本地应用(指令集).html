@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--    viewport这个需要多理解一下，就是相当于规定页面显示的大小，也就是决定css的像素到底以什么为单位-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--    强制IE8采用低版本方式渲染，确保ie8能正常显示-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue学习第二节本地应用(指令集)</title>
+    <!--    导入vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .active{
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+<!--        v-text-->
+        <h2 v-text="message+'学习'"></h2>
+<!--        使用插值表达式-->
+        <h2>{{message+"学习"}}</h2>
+        <hr/>
+<!--        v-html解析html结构-->
+        <h2 v-html="message1"></h2>
+        <h2 v-text="message1"></h2>
+        <hr/>
+<!--        v-on/@绑定事件-->
+        <!--单击-->
+        <input type="button" value="v-on指令" v-on:click="doIt">
+        <input type="button" value="v-on简写" @click="doIt">
+        <!--双击-->
+        <input type="button" value="双击事件" @dblclick="doIt">
+        <!--通过事件改变内容-->
+        <h3 @click="changeFood">{{food}}</h3>
+        <hr/>
+<!--        案例：计数器-->
+        <button @click="subNumber">-</button>
+        <span>{{number}}</span>
+        <button @click="addNumber">+</button>
+        <hr/>
+<!--        v-show：原理是修改元素的display，实现隐藏，这个操作的是样式，这个可以通过f12删除style="display: none;"实现未符合要求就显示图片，消耗的性能少-->
+        <button @click="subAge">减少一岁</button>
+        <span>当前年龄：{{age}}</span>
+        <button @click="addAge">增加一岁</button>
+        <img src="logo/logo1.png" v-show="age>17">
+        <hr/>
+<!--        v-if：这个操作的是元素，消耗的性能多-->
+        <span v-if="temperature>39">太热了</span>
+        <button @click="subTemperature">降温</button>
+        <hr/>
+<!--        v-bind:设置元素属性 :属性 是v-bind的简写-->
+        <img v-bind:src="imgSrc" alt="" :title="imgTitle" :class="isActive?'active':''" @click="imgClassChange">
+        <!--上面是用三元运算符判断,下面是以对象的形式判断-->
+        <img v-bind:src="imgSrc" alt="" :title="imgTitle" :class="{active:isActive}" @click="imgClassChange">
+        <hr/>
+<!--        v-for="item in arr" 对象 in 数组 或者 v-for="(item,index) in arr" index就是对应的索引-->
+        <ul>
+            <li v-for="(ele,index) in forList">
+                {{index+1}}.{{"姓名："+ele.name+"  年龄："+ele.age}}
+            </li>
+        </ul>
+        <button @click="subUser">减一个</button>
+        <button @click="addUser">加一个</button>
+        <hr/>
+<!--        v-on补充：传递自定义参数、事件修饰符-->
+        <button @click="manyParameter('参数1','参数2')">多参按钮</button>
+        <!--焦点在这个文本输入框的时候按下回车键会触发方法-->
+        <input type="text" @keyup.enter="eventMethod">
+        <hr/>
+<!--        v-model:获取和设置""表单元素""的值(双向数据绑定)-->
+        <h1>{{message2}}</h1>
+        <input type="text" v-model="message2">
+        <button type="button" @click="updateMessage2">修改message2</button>
+        <hr/>
+    </div>
+
+<script>
+    var app=new Vue({
+        el:"#app",
+        data:{
+            message:"v-text",
+            message1:"<font color=\"red\">v-html</font>",
+            food:"西兰花炒蛋",
+            number:1,
+            age:17,
+            temperature:40,
+            imgSrc:"logo/logo2.png",
+            imgTitle:"logo2",
+            isActive:false,
+            forList:[
+                {
+                    name:"张三",
+                    age:10
+                },
+                {
+                    name:"李四",
+                    age:11
+                },
+                {
+                    name:"王五",
+                    age:12
+                },
+                {
+                    name:"赵六",
+                    age:13
+                },
+                {
+                    name:"田七",
+                    age:14
+                }],
+            message2:"v-model测试"
+        },
+        //方法，这里是methods，有个s！！！
+        methods:{
+          doIt:function () {
+            alert("做IT");
+          },
+          changeFood:function () {
+              this.food+="好好吃!";
+          },
+          addNumber:function () {
+              let num=this.number;
+              if (num<10){
+                  this.number++;
+              }else {
+                  alert("已经是最大了");
+              }
+          },
+          subNumber:function () {
+              let num=this.number;
+              if (num>=1){
+                  this.number--;
+              }else {
+                  alert("已经是最小了");
+              }
+          },
+          addAge:function(){
+            this.age++;
+          },
+          subAge:function () {
+            this.age--;
+          },
+          subTemperature:function () {
+              this.temperature--;
+          },
+          imgClassChange:function () {
+              this.isActive=!this.isActive;
+          },
+          addUser:function () {
+              this.forList.push({name:"路人甲",age: 18});
+          },
+          subUser:function () {
+              this.forList.pop();
+          },
+          //多参数
+          manyParameter:function (p1,p2) {
+              console.log(p1);
+              console.log(p2);
+          },
+          //事件修饰符方法
+          eventMethod:function () {
+              alert("按下回车键");
+          },
+          updateMessage2:function () {
+              this.message2="修改后的message2";
+          }
+        }
+    })
+</script>
+</body>
+</html>
